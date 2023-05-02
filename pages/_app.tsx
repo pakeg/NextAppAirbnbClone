@@ -1,12 +1,14 @@
 import "../styles/globals.css";
 import type { AppProps } from "next/app";
 import Navbar from "../components/navbar/Navbar";
-import Modal from "../components/modals/Modal";
+import RegisterModal from "../components/modals/RegisterModal";
+import ToasterProvider from "../providers/ToasterProvider";
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <>
-      <Modal isOpen={true} />
+      <ToasterProvider />
+      <RegisterModal />
       <Navbar />
       <Component {...pageProps} />
     </>

@@ -82,7 +82,7 @@ const Modal: React.FC<IModalProps> = ({
                 onClick={handleClose}
                 className="p-1 border-0 hover:opacity-70 transition absolute left-9"
               >
-                <IoMdClose sice={18} />
+                <IoMdClose size={18} />
               </button>
               <div className="text-lg font-semibold">{title}</div>
             </div>
@@ -105,6 +105,7 @@ const Modal: React.FC<IModalProps> = ({
                   onClick={handleSubmit}
                 />
               </div>
+              {footer}
             </div>
           </div>
         </div>
