@@ -20,7 +20,12 @@ export default async function getCurrentUser(req, res) {
       return null;
     }
 
-    return currentUser;
+    return {
+      ...currentUser,
+      createAt: currentUser.createAt.toISOString(),
+      updatedAt: currentUser.updatedAt.toISOString(),
+      emailVerified: currentUser.emailVerified?.toISOString() || null,
+    };
   } catch (error: any) {
     return null;
   }

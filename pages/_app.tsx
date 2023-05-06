@@ -7,7 +7,7 @@ import LoginModal from "../components/modals/LoginModal";
 import ToasterProvider from "../providers/ToasterProvider";
 import axios from "axios";
 
-export default function App(props: AppProps) {
+export default function App({ Component, pageProps }: AppProps) {
   const [currentUser, setCurrentUser] = useState(null);
   useEffect(() => {
     axios
@@ -21,7 +21,7 @@ export default function App(props: AppProps) {
       <RegisterModal />
       <LoginModal />
       <Navbar currentUser={currentUser} />
-      <props.Component {...props.pageProps} />
+      <Component {...pageProps} />
     </>
   );
 }
