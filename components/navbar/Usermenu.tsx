@@ -6,8 +6,14 @@ import MenuItem from "./MenuItem";
 import { useState, useCallback } from "react";
 import useRegisterModal from "../../hooks/useRegisterModal";
 import useLoginModal from "../../hooks/useLoginModal";
+import { SafeUser } from "../../types/index";
+import { signOut } from "next-auth/react";
 
-const Usermenu = () => {
+interface IUsermenuProps {
+  currentUser?: SafeUser | null;
+}
+
+const Usermenu: React.FC<IUsermenuProps> = ({ currentUser }) => {
   const [isOpen, setIsOpen] = useState(false);
   const registerModal = useRegisterModal();
   const loginModal = useLoginModal();
@@ -39,12 +45,26 @@ const Usermenu = () => {
       </div>
       {isOpen && (
         <div
-          className="absolute rouded-xl shadow-md w-[40vw] md:w-3/4 bg-white overflow-hidden
+          className="absolute rouded-xl shadow-md w-[40vw] w-fit bg-white overflow-hidden
       right-0 top-12 text-sm"
         >
           <div className="flex flex-col cursor-pointer">
-            <MenuItem onClick={loginModal.onOpen} label="Login" />
-            <MenuItem onClick={registerModal.onOpen} label="Sign up" />
+            {currentUser ? (
+              <>
+                <MenuItem onClick={() => {}} label="My trips" />
+                <MenuItem onClick={() => {}} label="My favorites" />
+                <MenuItem onClick={() => {}} label="My reservations" />
+                <MenuItem onClick={() => {}} label="My properties" />
+                <MenuItem onClick={() => {}} label="My home" />
+                <hr />
+                <MenuItem onClick={() => signOut()} label="Logout" />
+              </>
+            ) : (
+              <>
+                <MenuItem onClick={loginModal.onOpen} label="Login" />
+                <MenuItem onClick={registerModal.onOpen} label="Sign up" />
+              </>
+            )}
           </div>
         </div>
       )}
