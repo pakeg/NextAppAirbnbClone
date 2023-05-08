@@ -4,6 +4,7 @@ import type { AppProps } from "next/app";
 import Navbar from "../components/navbar/Navbar";
 import RegisterModal from "../components/modals/RegisterModal";
 import LoginModal from "../components/modals/LoginModal";
+import RentModal from "../components/modals/RentModal";
 import ToasterProvider from "../providers/ToasterProvider";
 import axios from "axios";
 
@@ -20,6 +21,7 @@ export default function App({ Component, pageProps }: AppProps) {
       <ToasterProvider />
       <RegisterModal />
       <LoginModal />
+      <RentModal />
       <Navbar currentUser={currentUser} />
       <Component {...pageProps} />
     </>
