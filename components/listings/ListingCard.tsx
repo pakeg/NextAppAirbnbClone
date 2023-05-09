@@ -26,8 +26,8 @@ const ListingCard: React.FC<IListingCardProps> = ({
   currentUser,
 }) => {
   const router = useRouter();
-  const { getByValue } = useCountries();
-  const location = getByValue(data.locationValue);
+  const { getByValues } = useCountries();
+  const location = getByValues(data.locationValue);
 
   const handeCancel = useCallback(
     (e: React.MouseEvent<HTMLButtonElement>) => {
