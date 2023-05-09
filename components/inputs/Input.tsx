@@ -37,6 +37,7 @@ const Input: React.FC<InputProps> = ({
         disabled={disabled}
         placeholder="  "
         type={type}
+        min={type === "number" ? 0 : ""}
         {...register(id, { required })}
         className={`
         peer w-full p-4 pt-6 font-light bg-white border-2 rounded-md outline-none transition disabled:opacity-70

@@ -23,7 +23,9 @@ export default function App({ Component, pageProps }: AppProps) {
       <LoginModal />
       <RentModal />
       <Navbar currentUser={currentUser} />
-      <Component {...pageProps} />
+      <div className="pb-20 pt-28">
+        <Component {...pageProps} currentUser={currentUser} />
+      </div>
     </>
   );
 }

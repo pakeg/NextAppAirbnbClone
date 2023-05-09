@@ -6,13 +6,17 @@ import { useRouter } from "next/navigation";
 
 import Modal from "./Modal";
 import Heading from "../Heading";
-import toast from "react-hot-toast";
 
 import { categories } from "../navbar/Categories";
 import CategoryInput from "../inputs/CategoryInput";
 import CountrySelectInput from "../inputs/CountrySelectInput";
 import CounterInput from "../inputs/CounterInput";
+import UploadImageInput from "../inputs/UploadImageInput";
+import Input from "../inputs/Input";
+
 import dynamic from "next/dynamic";
+import axios from "axios";
+import toast from "react-hot-toast";
 
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 
@@ -63,7 +67,7 @@ const RentModal = () => {
       location: null,
       guestCount: 1,
       roomCount: 1,
-      bathroomCount: 1,
+      bathRoomCount: 1,
       imageSrc: "",
       price: 1,
       title: "",
@@ -74,7 +78,8 @@ const RentModal = () => {
   const location = watch("location");
   const guestCount = watch("guestCount");
   const roomCount = watch("roomCount");
-  const bathroomCount = watch("bathroomCount");
+  const bathRoomCount = watch("bathRoomCount");
+  const imageSrc = watch("imageSrc");
   const Map = useMemo(
     () => dynamic(() => import("../Map"), { ssr: false }),
     [location]
@@ -86,6 +91,27 @@ const RentModal = () => {
       shouldDirty: true,
       shouldTouch: true,
     });
+  };
+
+  const onSubmit: SubmitHandler<FieldValues> = (data) => {
+    if (step !== STEPS.PRICE) return onNext();
+    setIsLoading(true);
+
+    axios
+      .post("/api/listing", data)
+      .then(() => {
+        toast.success("Listing created!");
+        router.refresh();
+        reset();
+        setStep(STEPS.CATEGORY);
+        rentModal.onClose();
+      })
+      .catch(() => {
+        toast.error("Listing not created! Try later...");
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
   };
 
   switch (step) {
@@ -150,16 +176,76 @@ const RentModal = () => {
           <CounterInput
             title="Bathrooms"
             subtitle="How many Bathrooms?"
-            value={bathroomCount}
-            onChange={(bathroomCount) =>
-              setValueCustom("bathroomCount", bathroomCount)
+            value={bathRoomCount}
+            onChange={(bathRoomCount) =>
+              setValueCustom("bathRoomCount", bathRoomCount)
             }
           />
         </div>
       );
       break;
     case STEPS.IMAGES:
-      body = <div className="flex flex-col gap-8">IMAGES</div>;
+      body = (
+        <div className="flex flex-col gap-8">
+          <Heading
+            title="Add photo"
+            subtitle="Show guests how your place looks like."
+          />
+          <UploadImageInput
+            value={imageSrc}
+            onChange={(imageSrc) => setValueCustom("imageSrc", imageSrc)}
+          />
+        </div>
+      );
+      break;
+
+    case STEPS.DESCRIPTION:
+      body = (
+        <div className="flex flex-col gap-8">
+          <Heading
+            title="Describe your place"
+            subtitle="Short and sweet works best!"
+          />
+          <Input
+            id="title"
+            label="Title"
+            type="text"
+            register={register}
+            disabled={isLoading}
+            errors={errors}
+            required
+          />
+          <hr />
+          <Input
+            id="description"
+            label="Description"
+            register={register}
+            disabled={isLoading}
+            errors={errors}
+            required
+          />
+        </div>
+      );
+      break;
+    case STEPS.PRICE:
+      body = (
+        <div className="flex flex-col gap-8">
+          <Heading
+            title="Set your price!"
+            subtitle="How much do you charge per night?"
+          />
+          <Input
+            id="price"
+            label="Price"
+            formatPrice
+            type="number"
+            disabled={isLoading}
+            register={register}
+            errors={errors}
+            required
+          />
+        </div>
+      );
       break;
   }
 
@@ -178,7 +264,7 @@ const RentModal = () => {
       secondaryLabel={secondaryLabel}
       secondaryAction={step === STEPS.CATEGORY ? undefined : onBack}
       onClose={rentModal.onClose}
-      onSumbit={onNext}
+      onSumbit={handleSubmit(onSubmit)}
       body={body}
       footer={footer}
     />
