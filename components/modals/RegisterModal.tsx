@@ -36,7 +36,13 @@ const RegisterModal = () => {
 
     axios
       .post("/api/register", data)
-      .then(() => registerModal.onClose())
+      .then(() => {
+        toast.success("Registering is done!");
+        setTimeout(() => {
+          registerModal.onClose();
+          toast.success("Try to login.");
+        }, 500);
+      })
       .catch((errors) => toast.error("Something went wrong... try again later"))
       .finally(() => setIsLoading(false));
   };
