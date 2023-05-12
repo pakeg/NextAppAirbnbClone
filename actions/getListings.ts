@@ -10,6 +10,6 @@ export default async function getListings() {
 
     return JSON.stringify(listings);
   } catch (error: any) {
-    throw new Error(error);
+    return JSON.stringify([]);
   }
 }

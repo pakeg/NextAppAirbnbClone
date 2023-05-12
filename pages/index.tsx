@@ -1,7 +1,7 @@
 import Container from "../components/Container";
 import EmptyState from "../components/EmptyState";
 import getListings from "../actions/getListings";
-import ListingCard from "../components/listings/ListingCard";
+import ListingsCard from "../components/listings/ListingsCard";
 
 export default function index({ listings, currentUser }) {
   const isEmpty = listings.length == 0;
@@ -17,7 +17,7 @@ export default function index({ listings, currentUser }) {
       >
         {listings.map((listing) => {
           return (
-            <ListingCard
+            <ListingsCard
               key={listing.id}
               data={listing}
               currentUser={currentUser}

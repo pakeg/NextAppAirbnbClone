@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useRouter } from "next/navigation";
+import { useRouter } from "next/router";
 import { useCallback, useMemo } from "react";
 import toast from "react-hot-toast";
 
@@ -35,8 +35,9 @@ const useFavorites = ({ listingId, currentUser }: IuseFavorites) => {
           request = () => axios.post("/api/favorites/" + listingId);
         }
         await request();
-        toast.success("Success liked");
-        router.refresh();
+        if (hasFavorite) toast.success("Success unliked");
+        else toast.success("Success liked");
+        router.reload();
       } catch (error) {
         toast.error("Failed to liked");
       }
