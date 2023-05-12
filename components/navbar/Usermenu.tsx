@@ -9,6 +9,7 @@ import useLoginModal from "../../hooks/useLoginModal";
 import useRentModal from "../../hooks/useRentModal";
 import { SafeUser } from "../../types/index";
 import { signOut } from "next-auth/react";
+import { useRouter } from "next/router";
 
 interface IUsermenuProps {
   currentUser?: SafeUser | null;
@@ -19,6 +20,7 @@ const Usermenu: React.FC<IUsermenuProps> = ({ currentUser }) => {
   const registerModal = useRegisterModal();
   const loginModal = useLoginModal();
   const rentModal = useRentModal();
+  const router = useRouter();
 
   const onRent = useCallback(() => {
     if (!currentUser) return loginModal.onOpen();
@@ -58,7 +60,10 @@ const Usermenu: React.FC<IUsermenuProps> = ({ currentUser }) => {
           <div className="flex flex-col cursor-pointer">
             {currentUser ? (
               <>
-                <MenuItem onClick={() => {}} label="My trips" />
+                <MenuItem
+                  onClick={() => router.push("/trips?userId=" + currentUser.id)}
+                  label="My trips"
+                />
                 <MenuItem onClick={() => {}} label="My favorites" />
                 <MenuItem onClick={() => {}} label="My reservations" />
                 <MenuItem onClick={() => {}} label="My properties" />
