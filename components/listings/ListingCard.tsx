@@ -1,105 +1,51 @@
 "use client";
-
 import { Listing, Reservation } from "@prisma/client";
 import { SafeUser } from "../../types/index";
-import { useRouter } from "next/navigation";
-import useCountries from "../../hooks/useCountries";
-import { useCallback, useMemo } from "react";
-import { format } from "date-fns";
-import Image from "next/image";
-import HeartButton from "../HeartButton";
-import Button from "../Button";
+import { useMemo } from "react";
+
+import Container from "../Container";
+import { categories } from "../navbar/Categories";
+import ListingHead from "./ListingHead";
+import ListingInfo from "./ListingInfo";
 
 interface IListingCardProps {
-  data: Listing;
   reservation?: Reservation;
-  onAction?: (id: string) => void;
-  disabled?: boolean;
-  actionLabel?: string;
-  actionId?: string;
-  currentUser?: SafeUser | null;
+  listing: Listing & {
+    user: SafeUser;
+  };
+  currentUser: SafeUser;
 }
 
-const ListingCard: React.FC<IListingCardProps> = ({
-  data,
-  reservation,
-  onAction,
-  disabled,
-  actionLabel,
-  actionId = "",
-  currentUser,
-}) => {
-  const router = useRouter();
-  const { getByValues } = useCountries();
-  const location = getByValues(data.locationValue);
-
-  const handeCancel = useCallback(
-    (e: React.MouseEvent<HTMLButtonElement>) => {
-      e.stopPropagation();
-
-      if (disabled) return;
-      onAction?.(actionId);
-    },
-    [onAction, actionId, disabled]
-  );
-
-  const price = useMemo(() => {
-    if (reservation) reservation.totalPrice;
-    return data.price;
-  }, [reservation, data.price]);
-
-  const reservationDate = useMemo(() => {
-    if (!reservation) return null;
-
-    const start = new Date(reservation.startDate);
-    const end = new Date(reservation.endDate);
-
-    return `${format(start, "PP")} - ${format(end, "PP")}`;
-  }, [reservation]);
+const ListingCard: React.FC<IListingCardProps> = ({ listing, currentUser }) => {
+  const category = useMemo(() => {
+    return categories.find((item) => item.label == listing.category);
+  }, [listing.category]);
 
   return (
-    <div
-      className="cols-span-1 cursor-pointer group"
-      onClick={() => router.push("/listings/" + data.id)}
-    >
-      <div className="flex flex-col gap-2 w-full">
-        <div className="aspect-square w-full relative overflow-hidden rounded-xl">
-          <Image
-            fill
-            alt={data.title}
-            src={data.imageSrc}
-            className="object-cover h-full w-full group-hover:scale-110 transition"
+    <Container>
+      <div className="max-w-screen-lg mx-auto">
+        <div className="flex flex-col gap-6">
+          <ListingHead
+            title={listing.title}
+            imageSrc={listing.imageSrc}
+            locationValue={listing.locationValue}
+            id={listing.id}
+            currentUser={currentUser}
           />
-          <div className="absolute top-3 right-3">
-            <HeartButton listingId={data.id} currentUser={currentUser} />
+          <div className="grid grid-cols-1 md:grid-cols-7 md:gap-10 mt-6">
+            <ListingInfo
+              user={listing.user}
+              category={category}
+              description={listing.description}
+              roomCout={listing.roomCout}
+              guestCount={listing.guestCount}
+              bathRoomCount={listing.bathRoomCount}
+              locationValue={listing.locationValue}
+            />
           </div>
         </div>
-
-        <div className="font-semibold text-xs">
-          {location?.region}, {location?.label}
-        </div>
-        <div className="font-light text-neutral-400">
-          {reservationDate || data.category}
-        </div>
-        <div className="flex flex-row items-center gap-1">
-          <div className="font-semibold">
-            {new Intl.NumberFormat("de-DE", {
-              style: "currency",
-              currency: "EUR",
-            }).format(price)}
-          </div>
-          {!reservation && <div className="font-light">night</div>}
-        </div>
-        {onAction && actionLabel && (
-          <Button
-            disabled={disabled}
-            small
-            label={actionLabel}
-            onClick={handeCancel}
-          />
-        )}
       </div>
-    </div>
+    </Container>
   );
 };
 
