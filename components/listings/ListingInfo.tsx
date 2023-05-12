@@ -42,7 +42,7 @@ const ListingInfo: React.FC<IListingInfoProps> = ({
       <div className="flex flex-col gap-2">
         <div className="text-xl font-semibold flex flex-row items-center gap-2">
           <div>
-            <span className="text-sm text-neutral-500">Hosted by</span>{" "}
+            <span className="text-sm text-neutral-500">Hosted by</span>
             {user?.name}
           </div>
           <Avatar src={user?.image} />
