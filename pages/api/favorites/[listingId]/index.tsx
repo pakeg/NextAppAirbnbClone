@@ -19,7 +19,7 @@ export default async function handler(
   const { listingId }: IParams = req.query;
 
   if (!listingId || typeof listingId !== "string") {
-    return res.status(406).json({ message: "invalid parametrs" });
+    return res.status(406).json({ message: "invalid parameters" });
   }
 
   let favoriteIds = [...(currentUser.favoriteIds || [])];

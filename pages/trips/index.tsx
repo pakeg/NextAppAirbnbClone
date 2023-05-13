@@ -4,13 +4,14 @@ import Container from "../../components/Container";
 import EmptyState from "../../components/EmptyState";
 import TripsCard from "../../components/TripsCard";
 
-export default function index({ currentUser, reservation }) {
+export default function index({ currentUser, userId, reservation }) {
   if (!currentUser) {
     return (
       <EmptyState showReset title="Unauthorized" subtitle="Please login!" />
     );
   }
-  if (reservation.length == 0) {
+
+  if (reservation.length == 0 || currentUser.id != userId) {
     return (
       <EmptyState
         showReset
@@ -32,6 +33,6 @@ export async function getServerSideProps(req, res) {
   const reservation = JSON.parse(await getReservation({ userId }));
 
   return {
-    props: { reservation },
+    props: { reservation, userId },
   };
 }

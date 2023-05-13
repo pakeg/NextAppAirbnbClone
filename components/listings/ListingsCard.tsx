@@ -8,6 +8,7 @@ import { format } from "date-fns";
 import Image from "next/image";
 import HeartButton from "../HeartButton";
 import Button from "../Button";
+import Currency from "../Currency";
 
 interface IListingsCardProps {
   data: SafeListing;
@@ -32,7 +33,7 @@ const ListingsCard: React.FC<IListingsCardProps> = ({
   const { getByValues } = useCountries();
   const location = getByValues(data.locationValue);
 
-  const handeCancel = useCallback(
+  const handleCancel = useCallback(
     (e: React.MouseEvent<HTMLButtonElement>) => {
       e.stopPropagation();
 
@@ -82,10 +83,7 @@ const ListingsCard: React.FC<IListingsCardProps> = ({
         </div>
         <div className="flex flex-row items-center gap-1">
           <div className="font-semibold">
-            {new Intl.NumberFormat("de-DE", {
-              style: "currency",
-              currency: "EUR",
-            }).format(price)}
+            <Currency price={price} />
           </div>
           {!reservation && <div className="font-light">night</div>}
         </div>
@@ -94,7 +92,7 @@ const ListingsCard: React.FC<IListingsCardProps> = ({
             disabled={disabled}
             small
             label={actionLabel}
-            onClick={handeCancel}
+            onClick={handleCancel}
           />
         )}
       </div>
