@@ -1,19 +1,23 @@
 "use client";
 
+import toast from "react-hot-toast";
+import axios from "axios";
+import { useCallback, useState } from "react";
+import { useRouter } from "next/router";
 import { SafeReservation, SafeUser } from "../types/index";
 import Heading from "./Heading";
-import { useRouter } from "next/router";
-import { useState, useCallback } from "react";
-import axios from "axios";
-import toast from "react-hot-toast";
+import Container from "./Container";
 import ListingsCard from "./listings/ListingsCard";
 
-interface ITripsCardProps {
+interface IReservationPageProps {
   currentUser?: SafeUser | null;
   reservation: SafeReservation[];
 }
 
-const TripsCard: React.FC<ITripsCardProps> = ({ currentUser, reservation }) => {
+const ReservationPage: React.FC<IReservationPageProps> = ({
+  currentUser,
+  reservation,
+}) => {
   const router = useRouter();
   const [deletingId, setDeletingId] = useState("");
 
@@ -24,11 +28,11 @@ const TripsCard: React.FC<ITripsCardProps> = ({ currentUser, reservation }) => {
       axios
         .delete("/api/reservation", { data: { reservationId: id } })
         .then(() => {
-          toast.success("Reservation cancelled");
+          toast.success("Guest reservation cancelled");
           router.reload();
         })
         .catch(() => {
-          toast.error("Reservation not cancelled");
+          toast.error("Guest reservation not cancelled");
         })
         .finally(() => {
           setDeletingId("");
@@ -38,11 +42,8 @@ const TripsCard: React.FC<ITripsCardProps> = ({ currentUser, reservation }) => {
   );
 
   return (
-    <>
-      <Heading
-        title="Trips"
-        subtitle="Where you have been and where you are going."
-      />
+    <Container>
+      <Heading title="Reservation" subtitle="Bookings on your properties" />
       <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-8">
         {reservation.map((item) => (
           <ListingsCard
@@ -52,13 +53,13 @@ const TripsCard: React.FC<ITripsCardProps> = ({ currentUser, reservation }) => {
             actionId={item.id}
             onAction={onCancel}
             disabled={deletingId === item.id}
-            actionLabel="Cancel reservation"
+            actionLabel="Cancel quest reservation"
             currentUser={currentUser}
           />
         ))}
       </div>
-    </>
+    </Container>
   );
 };
 
-export default TripsCard;
+export default ReservationPage;

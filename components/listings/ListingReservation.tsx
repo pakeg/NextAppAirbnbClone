@@ -3,6 +3,7 @@
 import { Range } from "react-date-range";
 import CalendarInput from "../inputs/CalendarInput";
 import Button from "../Button";
+import Currency from "../Currency";
 
 interface IListingReservationProps {
   price: number;
@@ -27,10 +28,7 @@ const ListingReservation: React.FC<IListingReservationProps> = ({
     <div className="bg-white rounded-xl border border-neutral-200 overflow-hidden">
       <div className="flex flex-row items-center gap-1 p-4">
         <div className="text-2xl font-semibold">
-          {new Intl.NumberFormat("de-DE", {
-            style: "currency",
-            currency: "EUR",
-          }).format(price)}
+          <Currency price={price} />
         </div>
         <div className="font-light text-neutral-600">night</div>
       </div>
