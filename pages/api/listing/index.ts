@@ -8,13 +8,12 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
+  const currentUser = await getCurrentUser(req, res);
+  if (!currentUser) {
+    return res.status(401).json({ message: "user not found" });
+  }
+
   if (req.method === "POST") {
-    const currentUser = await getCurrentUser(req, res);
-
-    if (!currentUser) {
-      return res.status(401).json({ message: "user not found" });
-    }
-
     const {
       title,
       description,
@@ -45,6 +44,25 @@ export default async function handler(
       return res.status(200).json(listing);
     } catch (error) {
       return res.status(500).json({ message: "Failed to create listing" });
+    }
+  } else if (req.method === "DELETE") {
+    const { listingId } = req.body;
+
+    if (!listingId || typeof listingId !== "string") {
+      res.status(406).json({ message: "invalid parameters" });
+    }
+
+    try {
+      const deleteListing = await prisma.listing.deleteMany({
+        where: {
+          id: listingId,
+          userId: currentUser.id,
+        },
+      });
+
+      return res.status(200).json(deleteListing);
+    } catch (error) {
+      return res.status(500).json({ message: "Failed to delete listing." });
     }
   } else {
     return res.status(405).json({ message: "Method not allowed" });

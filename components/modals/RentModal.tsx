@@ -264,7 +264,7 @@ const RentModal = () => {
       secondaryLabel={secondaryLabel}
       secondaryAction={step === STEPS.CATEGORY ? undefined : onBack}
       onClose={rentModal.onClose}
-      onSumbit={handleSubmit(onSubmit)}
+      onSubmit={handleSubmit(onSubmit)}
       body={body}
       footer={footer}
     />

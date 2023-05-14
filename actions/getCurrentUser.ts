@@ -5,7 +5,6 @@ import prisma from "../libs/prismadb";
 export default async function getCurrentUser(req, res) {
   try {
     const session = await getServerSession(req, res, authOptions);
-
     if (!session?.user?.email) {
       return null;
     }
