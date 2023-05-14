@@ -7,7 +7,7 @@ import Button from "../Button";
 interface IModalProps {
   isOpen?: boolean;
   onClose: () => void;
-  onSumbit: () => void;
+  onSubmit: () => void;
   title?: string;
   body?: React.ReactElement;
   footer?: React.ReactElement;
@@ -20,7 +20,7 @@ interface IModalProps {
 const Modal: React.FC<IModalProps> = ({
   isOpen,
   onClose,
-  onSumbit,
+  onSubmit,
   title,
   body,
   footer,
@@ -46,8 +46,8 @@ const Modal: React.FC<IModalProps> = ({
   const handleSubmit = useCallback(() => {
     if (disabled) return;
 
-    onSumbit();
-  }, [disabled, onSumbit]);
+    onSubmit();
+  }, [disabled, onSubmit]);
 
   const handelSecondaryAction = useCallback(() => {
     if (disabled || !secondaryAction) return;

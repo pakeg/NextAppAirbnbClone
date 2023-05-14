@@ -116,7 +116,7 @@ const LoginModal = () => {
       title="Login"
       actionLabel="Log in"
       onClose={loginModal.onClose}
-      onSumbit={handleSubmit(onSubmit)}
+      onSubmit={handleSubmit(onSubmit)}
       body={body}
       footer={footer}
     />

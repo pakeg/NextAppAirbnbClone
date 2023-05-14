@@ -5,6 +5,7 @@ import Navbar from "../components/navbar/Navbar";
 import RegisterModal from "../components/modals/RegisterModal";
 import LoginModal from "../components/modals/LoginModal";
 import RentModal from "../components/modals/RentModal";
+import SearchModal from "../components/modals/SearchModal";
 import ToasterProvider from "../providers/ToasterProvider";
 import axios from "axios";
 
@@ -22,6 +23,7 @@ export default function App({ Component, pageProps }: AppProps) {
       <RegisterModal />
       <LoginModal />
       <RentModal />
+      <SearchModal />
       <Navbar currentUser={currentUser} />
       <div className="pb-20 pt-28">
         <Component {...pageProps} currentUser={currentUser} />
