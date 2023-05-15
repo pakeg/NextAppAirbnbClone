@@ -29,8 +29,27 @@ export default function index({ listings, currentUser }) {
   );
 }
 
-export async function getServerSideProps(req, res) {
-  const listings = JSON.parse(await getListings());
+export async function getServerSideProps(ctx) {
+  const {
+    guestCount,
+    roomCount,
+    bathRoomCount,
+    startDate,
+    endDate,
+    locationValue,
+    category,
+  } = ctx.query;
+  const listings = JSON.parse(
+    await getListings({
+      guestCount,
+      roomCount,
+      bathRoomCount,
+      startDate,
+      endDate,
+      locationValue,
+      category,
+    })
+  );
 
   return {
     props: {

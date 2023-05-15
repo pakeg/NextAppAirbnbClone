@@ -42,10 +42,7 @@ const ListingReservation: React.FC<IListingReservationProps> = ({
       <div className="flex flex-row items-center justify-between p-4 font-semibold text-lg">
         <div>Total:</div>
         <div>
-          {new Intl.NumberFormat("de-DE", {
-            style: "currency",
-            currency: "EUR",
-          }).format(totalPrice)}
+          <Currency price={totalPrice} currency="EUR" locale="de-DE" />
         </div>
       </div>
       <hr />
