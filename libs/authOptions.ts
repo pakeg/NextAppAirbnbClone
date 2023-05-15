@@ -60,7 +60,7 @@ const authOptions: AuthOptions = {
   secret: process.env.NEXTAUTH_SECRET,
   callbacks: {
     async redirect({ url, baseUrl }) {
-      if (new URL(url).origin !== baseUrl) return url;
+      // if (new URL(url).origin !== baseUrl) return url;
       return baseUrl;
     },
   },

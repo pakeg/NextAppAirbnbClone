@@ -13,6 +13,7 @@ import qs from "query-string";
 import { formatISO } from "date-fns";
 import Heading from "../Heading";
 import CalendarInput from "../inputs/CalendarInput";
+import CounterInput from "../inputs/CounterInput";
 
 enum STEPS {
   LOCATION = 0,
@@ -43,11 +44,11 @@ const SearchModal = () => {
 
   const onBack = useCallback(() => {
     setStep(step - 1);
-  }, []);
+  }, [step]);
 
   const onNext = useCallback(() => {
     setStep(step + 1);
-  }, []);
+  }, [step]);
 
   const onSubmit = useCallback(async () => {
     if (step !== STEPS.INFO) return onNext();
@@ -140,8 +141,26 @@ const SearchModal = () => {
       body = (
         <div className="flex flex-col gap-8">
           <Heading
-            title="Where do you wanna go?"
-            subtitle="Find a perfect location."
+            title="More information"
+            subtitle="Find your perfect place!"
+          />
+          <CounterInput
+            title="Guests"
+            subtitle="How many guests are coming?"
+            value={guestCount}
+            onChange={(value) => setGuestCount(value)}
+          />
+          <CounterInput
+            title="Rooms"
+            subtitle="How many Rooms do you need?"
+            value={roomCount}
+            onChange={(value) => setRoomCount(value)}
+          />
+          <CounterInput
+            title="Bathrooms"
+            subtitle="How many bathrooms do you need?"
+            value={bathRoomCount}
+            onChange={(value) => setBathRoomCount(value)}
           />
         </div>
       );

@@ -8,6 +8,7 @@ import RentModal from "../components/modals/RentModal";
 import SearchModal from "../components/modals/SearchModal";
 import ToasterProvider from "../providers/ToasterProvider";
 import axios from "axios";
+import Loader from "../components/Loader";
 
 export default function App({ Component, pageProps }: AppProps) {
   const [currentUser, setCurrentUser] = useState(null);

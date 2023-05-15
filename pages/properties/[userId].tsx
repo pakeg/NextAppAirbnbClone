@@ -30,7 +30,7 @@ export default function index({ currentUser, userId, listings }) {
 
 export async function getServerSideProps(req, res) {
   const { userId } = req.query;
-  const listings = JSON.parse(await getListings(userId));
+  const listings = JSON.parse(await getListings({ userId }));
 
   return {
     props: { listings, userId },
